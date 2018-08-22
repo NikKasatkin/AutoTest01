@@ -12,7 +12,7 @@ public class test1 {
 
 
         mailru_page mailru_page1 =  new mailru_page();
-        mailru_page1.logging_in("i.human.new@gmail.com","1gctugfags", "i_human@list.ru" );
+        mailru_page1.logging_in("i.human.new@gmail.com","1gctugfags", "i_human@list.ru" ); //i_lead_master@list.ru : i_human@list.ru
 
 
 

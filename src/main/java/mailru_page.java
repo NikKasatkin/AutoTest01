@@ -4,8 +4,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ByIdOrName;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import sun.print.DialogOnTop;
 
 import javax.swing.*;
 import java.net.MalformedURLException;
@@ -17,7 +19,7 @@ public class mailru_page  {
 
 
     public mailru_page logging_in ( String user, String password, String searching_name) throws InterruptedException, MalformedURLException {
-        
+
         //java -jar selenium-server-standalone-3.14.0.jar -role hub
         //java -jar selenium-server-standalone-3.14.0.jar -role node  -hub http://localhost:4444/grid/register
         //java -jar selenium-server-standalone-3.14.0.jar -role node  -hub http://192.168.0.82:4444/grid/register
@@ -48,25 +50,24 @@ public class mailru_page  {
             driver.findElement(By.xpath("//*[@id=\"gb23\"]")).click();
 
             WebDriverWait waitGmail = new WebDriverWait(driver, 100);
-            waitGmail.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"gbqfq\"]")));
-            driver.findElement(By.xpath("//*[@id=\"gbqfq\"]")).sendKeys(searching_name);
-            driver.findElement(By.xpath("//*[@id=\"gbqfb\"]")).click();
+            waitGmail.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"aso_search_form_anchor\"]/button[2]")));
+            driver.findElement(By.xpath("//*[@id=\"aso_search_form_anchor\"]/button[2]")).click();
+            waitGmail.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@class=\"ZH nr aQa\"]")));
+            driver.findElement(By.xpath("//*[@class=\"ZH nr aQa\"]")).sendKeys(searching_name);
+            driver.findElement(By.xpath("//*[@data-tooltip=\"Поиск почты\"]")).click();
 
+            List<WebElement> rows_table = driver.findElement(By.xpath("//*[@class=\"F cf zt\"]/tbody")).findElements(By.xpath("//*[@email=\""+searching_name+"\"]"));
+            int rows_count = rows_table.size();
+            long result = rows_count / 2; //
 
-//            #\3a 2 > div > div:nth-child(2) > div.ae4.UI.UJ > div.Cp > div  #\3a 6k > tbody  #\3a 6l
-//            #\3a 6k  #\3a 2 > div > div:nth-child(2) > div.ae4.UI.UJ        #\3a 2 > div > div:nth-child(2) > div.ae4.UI.UJ
-//*[@id=":6k"]
-
-            //int a = driver.findElements(By.id(":6K")).size();
-            //int a = driver.findElements(By.name("nXDxbd")).size();
-            int a = driver.findElements(By.xpath("//*[@id=\":93\"]/span/span[2]")).size();
-
-
-
-            JOptionPane.showMessageDialog(null, a);
+            final JDialog dialog = new JDialog();
+            dialog.setAlwaysOnTop(true);
+            JOptionPane.showMessageDialog(dialog, "Писем от  "+ searching_name +"  "+ result +" шт.");
             driver.quit();
         }catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "освободить node");
+            final JDialog dialog = new JDialog();
+            dialog.setAlwaysOnTop(true);
+            JOptionPane.showMessageDialog(dialog, "ошибка логики  необходимо освободить node");
             driver.quit();
         }
         driver.quit();
